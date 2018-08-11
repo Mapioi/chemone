@@ -1,14 +1,14 @@
 <template>
   <div class="element-cell">
-    <h3 class="element-atomic-number">
+    <span class="element-atomic-number">
       {{ atomicNumber }}
-    </h3>
+    </span>
     <h1 class="element-symbol">
       {{ symbol }}
     </h1>
-    <h3 class="element-atomic-mass">
+    <span class="element-atomic-mass">
       {{ atomicMass }}
-    </h3>
+    </span>
   </div>
 </template>
 
@@ -41,10 +41,20 @@ export default {
 };
 </script>
 
-<!--TODO css-->
 <style scoped>
 .element-cell {
   display: inline-block;
   border: 1px solid dimgrey;
+  padding: 10px;
+  width: 120px;
+  height: 110px;
+  margin-bottom: 15px;
+  margin-right: 5px;
+}
+
+.element-atomic-number,
+.element-atomic-mass {
+  font-size: 1.2em;
+  font-weight: bold;
 }
 </style>

@@ -12,6 +12,9 @@
       </label>
     </div>
     <div>
+      <div class="no-results" v-if="!symbolsList.length">
+        No results
+      </div>
       <ElementCellsRow
         v-for="(symbols, i) in symbolsList"
         :key="i"
@@ -54,5 +57,26 @@ export default {
   text-align: center;
   color: #2c3e50;
   margin-top: 60px;
+}
+
+input {
+  width: 400px;
+  height: 40px;
+  border-radius: 5px;
+  border: 3px solid lightgray;
+  padding: 5px;
+  font-size: 1.5em;
+  margin: 20px auto;
+}
+
+input:focus {
+  border-color:gray;
+  outline-width: 0;
+}
+
+.no-results {
+  color: gray;
+  font-size: 1.5em;
+  margin-top: 10px;
 }
 </style>
