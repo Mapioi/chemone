@@ -30,6 +30,9 @@
       >
         ›
       </button>
+      <span class="small-text">
+        {{ nPossibilities }} combination{{nPossibilities !== 1 ? "s" : ""}}
+      </span>
     </div>
   </div>
 </template>
@@ -55,6 +58,9 @@ export default {
   computed: {
     symbolsList() {
       return spell(this.input);
+    },
+    nPossibilities() {
+      return this.symbolsList.length;
     },
     symbols() {
       return this.symbolsList[this.symbolsIndex];
@@ -120,5 +126,10 @@ button {
   margin-right: 8px;
   font-weight: bolder;
   font-size: 1.2em;
+}
+
+.small-text {
+  color: gray;
+  font-size: 0.8em;
 }
 </style>
