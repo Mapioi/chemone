@@ -21,7 +21,7 @@ const symbols = data.elements.map((element) => element.symbol);
  */
 export default function spell(word) {
   const spellings = [];
-  word = word.toUpperCase().replace(" ", "");
+  word = word.toUpperCase().replace(/ /g, "");
 
   /**
    * Recursively derive ways to spell out the given word.
