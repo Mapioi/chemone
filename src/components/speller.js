@@ -5,7 +5,7 @@ const symbols = data.elements.map((element) => element.symbol);
 /**
  * Returns all ways to spell the given word with chemical symbols.
  * @param {String} word - The word to be spelt. Case-insensitive.
- *                        Whitespaces are omitted. TODO check needed
+ *                        Whitespaces are omitted.
  * @returns {(String[])[]} - The ways to spell the given word with chemical symbols.
  *                           Each way is represented by an array of strings of chemical symbols.
  *                           If the word cannot be spelt, an empty array is returned.

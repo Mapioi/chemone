@@ -1,10 +1,6 @@
 <template>
   <div id="app">
-    <!--TODO replace logo-->
-    <img
-      alt="Vue logo"
-      src="./assets/logo.png"
-    >
+    <TheLogo/>
     <div>
       <label>
         <input
@@ -22,15 +18,15 @@
       />
       <button
         v-if="symbolsList.length"
-        @click="nextSpelling"
-        :disabled="!hasNextSpelling"
+        @click="previousSpelling"
+        :disabled="!hasPreviousSpelling"
       >
         ‹
       </button>
       <button
         v-if="symbolsList.length"
-        @click="previousSpelling"
-        :disabled="!hasPreviousSpelling"
+        @click="nextSpelling"
+        :disabled="!hasNextSpelling"
       >
         ›
       </button>
@@ -42,6 +38,7 @@
 
 import spell from "./components/speller";
 import ElementCellsRow from "./components/ElementCellsRow";
+import TheLogo from "./components/TheLogo";
 
 export default {
   name: "app",
@@ -82,7 +79,7 @@ export default {
       this.symbolsIndex = 0;
     }
   },
-  components: { ElementCellsRow }
+  components: { TheLogo, ElementCellsRow }
 };
 </script>
 
@@ -93,7 +90,7 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  margin-top: 60px;
+  margin-top: 16px;
 }
 
 input {
