@@ -1,7 +1,10 @@
 <template>
   <div id="app">
     <!--TODO replace logo-->
-    <img alt="Vue logo" src="./assets/logo.png">
+    <img
+      alt="Vue logo"
+      src="./assets/logo.png"
+    >
     <div>
       <label>
         <input
@@ -13,14 +16,24 @@
       </label>
     </div>
     <div>
-      <div class="no-results" v-if="!symbolsList.length">
-        No results
-      </div>
       <ElementCellsRow
-        v-for="(symbols, i) in symbolsList"
-        :key="i"
+        v-if="symbolsList.length"
         :symbols="symbols"
       />
+      <button
+        v-if="symbolsList.length"
+        @click="nextSpelling"
+        :disabled="!hasNextSpelling"
+      >
+        ‹
+      </button>
+      <button
+        v-if="symbolsList.length"
+        @click="previousSpelling"
+        :disabled="!hasPreviousSpelling"
+      >
+        ›
+      </button>
     </div>
   </div>
 </template>
@@ -38,12 +51,35 @@ export default {
   // this will not be the Vue instance as you’d expect and this.myMethod will be undefined."
   data() {
     return {
-      input: ""
+      input: "",
+      symbolsIndex: 0
     };
   },
   computed: {
     symbolsList() {
       return spell(this.input);
+    },
+    symbols() {
+      return this.symbolsList[this.symbolsIndex];
+    },
+    hasNextSpelling() {
+      return this.symbolsIndex < this.symbolsList.length - 1;
+    },
+    hasPreviousSpelling() {
+      return this.symbolsIndex > 0;
+    }
+  },
+  methods: {
+    nextSpelling() {
+      this.symbolsIndex++;
+    },
+    previousSpelling() {
+      this.symbolsIndex--;
+    }
+  },
+  watch: {
+    input() {
+      this.symbolsIndex = 0;
     }
   },
   components: { ElementCellsRow }
@@ -82,9 +118,10 @@ input:focus {
   outline-width: 0;
 }
 
-.no-results {
-  color: gray;
-  font-size: 1.5em;
-  margin-top: 10px;
+button {
+  display: inline-flex;
+  margin-right: 8px;
+  font-weight: bolder;
+  font-size: 1.2em;
 }
 </style>

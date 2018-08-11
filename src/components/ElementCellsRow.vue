@@ -2,7 +2,7 @@
   <div class="element-cells-row">
     <ElementCell
       v-for="(symbol, i) in symbols"
-      :key="i"
+      :key="i + 1"
       :symbol="symbol"
     />
   </div>
