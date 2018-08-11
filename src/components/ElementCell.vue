@@ -45,16 +45,14 @@ export default {
 .element-cell {
   display: inline-block;
   border: 1px solid dimgrey;
-  padding: 10px;
-  width: 120px;
-  height: 110px;
+  padding: 10px 50px;
   margin-bottom: 15px;
   margin-right: 5px;
+  background: #f8f8f8;
 }
 
 .element-atomic-number,
 .element-atomic-mass {
-  font-size: 1.2em;
   font-weight: bold;
 }
 </style>

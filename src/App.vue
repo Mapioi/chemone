@@ -8,6 +8,7 @@
           autofocus
           v-model="input"
           placeholder="Parisi"
+          spellcheck="false"
         />
       </label>
     </div>
@@ -62,15 +63,22 @@ export default {
 input {
   width: 400px;
   height: 40px;
-  border-radius: 5px;
-  border: 3px solid lightgray;
-  padding: 5px;
+  border-radius: 15px;
+  border: 2px solid #e3e3e3;
+  color: #2c3e50;
+  outline: none;
+  padding: 0 15px 0 32px;
   font-size: 1.5em;
   margin: 20px auto;
+  transition: border-color 0.2s ease;
+  vertical-align: middle !important;
+  background-size: 16px;
+  background: #fff url("assets/baseline-spellcheck-24px.svg") 5px no-repeat;
+  text-transform: capitalize;
 }
 
 input:focus {
-  border-color:gray;
+  border-color: #42b983;
   outline-width: 0;
 }
 
