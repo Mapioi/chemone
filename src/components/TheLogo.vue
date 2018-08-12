@@ -1,22 +1,25 @@
 <template>
   <div>
     <div class="logo-row">
+      <!--Coal-->
       <ElementCell
         symbol="C"
-        background="#000"
+        background="#2c2c2c"
         color="#fff"
       />
+      <!--Helium gas-->
       <ElementCell
         symbol="He"
-        background="#fff"
-        color="#000"
+        background="#f9fbfc"
+        color="#0e1111"
       />
-    </div>
-    <div class="logo-row">
+      <!--Molybdenum metal-->
       <ElementCell
         symbol="Mo"
-        background="#cccccc"
+        background="linear-gradient(11deg, #b2b4b5, #fafafa)"
+        color="#002147"
       />
+      <!--Neon lights-->
       <ElementCell
         symbol="Ne"
         background="linear-gradient(169deg, #e57373, #fff176, #a5d6a7, #80cbc4, #b39ddb)"
@@ -35,6 +38,10 @@ export default {
 </script>
 
 <style scoped>
+.logo-row {
+  white-space: nowrap;
+}
+
 .logo-row > div {
   margin: 0;
 }
