@@ -51,7 +51,7 @@ export default {
   // this will not be the Vue instance as you’d expect and this.myMethod will be undefined."
   data() {
     return {
-      input: "",
+      input: this.$route.path.split("/spell/")[1] || "",
       symbolsIndex: 0
     };
   },
@@ -83,6 +83,7 @@ export default {
   watch: {
     input() {
       this.symbolsIndex = 0;
+      this.$router.push({ path: `/spell/${this.input}`});
     }
   },
   components: { TheLogo, ElementCellsRow }
