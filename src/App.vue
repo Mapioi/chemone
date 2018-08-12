@@ -3,35 +3,39 @@
     <TheLogo/>
     <div>
       <label>
+        <!--TODO make a list of placeholders-->
         <input
           autofocus
           v-model="input"
-          placeholder="Parisi"
+          placeholder="Paris"
           spellcheck="false"
         />
       </label>
     </div>
     <div>
       <ElementCellsRow
-        v-if="symbolsList.length"
+        v-if="nSpellings"
         :symbols="symbols"
       />
       <button
-        v-if="symbolsList.length"
+        v-if="nSpellings"
         @click="previousSpelling"
         :disabled="!hasPreviousSpelling"
       >
         ‹
       </button>
       <button
-        v-if="symbolsList.length"
+        v-if="nSpellings"
         @click="nextSpelling"
         :disabled="!hasNextSpelling"
       >
         ›
       </button>
-      <span class="small-text">
-        {{ nPossibilities }} combination{{nPossibilities !== 1 ? "s" : ""}}
+      <span
+        v-if="nSpellings"
+        class="small-text"
+      >
+        {{ symbolsIndex + 1 }} of {{ nSpellings }} result{{ nSpellings !== 1 ? "s" : "" }}
       </span>
     </div>
   </div>
@@ -55,11 +59,12 @@ export default {
       symbolsIndex: 0
     };
   },
+  // For fun, start skimming ->
   computed: {
     symbolsList() {
       return spell(this.input);
     },
-    nPossibilities() {
+    nSpellings() {
       return this.symbolsList.length;
     },
     symbols() {
@@ -83,9 +88,12 @@ export default {
   watch: {
     input() {
       this.symbolsIndex = 0;
-      this.$router.push({ path: `/spell/${this.input}`});
+      this.$router.push({ path: `/spell/${this.input}` });
     }
   },
+  // Doesn't (including these 2 comments) this look like the Nepal flag?
+  // P.S. For those who haven't seen it: http://flagpedia.net/data/flags/big/np.png
+  // <- Stop skimming
   components: { TheLogo, ElementCellsRow }
 };
 </script>
