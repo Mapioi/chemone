@@ -12,12 +12,26 @@
     </label>
     <div v-if="showOptions">
       <DropdownSelectOption
-        v-for="(option, i) of [value, ...options]"
-        :key="option + i"
+        v-if="startIndex > 0"
+        option="▲"
+        :selected="false"
+        :on-select="previousOption"
+        :on-hover="previousOption"
+      />
+      <DropdownSelectOption
+        v-for="(option, i) of optionsShown"
+        :key="option + (startIndex + i)"
         :option="option"
-        :selected="i === selectedIndex"
+        :selected="startIndex + i === selectedIndex"
         :on-select="() => onSelect(option)"
-        :on-hover="() => selectedIndex = i"
+        :on-hover="() => selectedIndex = startIndex + i"
+      />
+      <DropdownSelectOption
+        v-if="endIndex <= options.length"
+        option="▼"
+        :selected="false"
+        :on-select="nextOption"
+        :on-hover="nextOption"
       />
     </div>
   </div>
@@ -34,19 +48,31 @@ export default {
     placeHolder: String,
     options: { type: Array, required: true },
     showOptions: { type: Boolean, required: true },
+    height: { type: Number, default: 15 },
     onSelect: { type: Function, required: true }
   },
   data() {
     return {
-      selectedIndex: 0
+      selectedIndex: 0,
+      startIndex: 0
     };
+  },
+  computed: {
+    endIndex() {
+      return this.startIndex + this.height;
+    },
+    optionsShown() {
+      return [this.value, ...this.options].slice(this.startIndex, this.endIndex);
+    }
   },
   methods: {
     nextOption() {
       if (this.selectedIndex < this.options.length) this.selectedIndex++;
+      if (this.selectedIndex >= this.endIndex) this.startIndex++;
     },
     previousOption() {
       if (this.selectedIndex > 0) this.selectedIndex--;
+      if (this.selectedIndex < this.startIndex) this.startIndex--;
     },
     handleKeyDown(e) {
       if (e.key === "ArrowUp") {
@@ -63,6 +89,7 @@ export default {
   watch: {
     value() {
       this.selectedIndex = 0;
+      this.startIndex = 0;
     }
   }
 };

@@ -40,6 +40,10 @@ export default {
   border-bottom-width: 1px;
 }
 
+.option {
+  user-select: none;
+}
+
 .selected {
   background: azure;
 }
