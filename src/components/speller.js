@@ -53,13 +53,15 @@ function spell(word) {
  */
 function suggestFuzzy(word) {
   const suggestions = [];
+  word = word.toUpperCase();
+
   for (let i = 0; i < word.length; i++) {
     const wordWithoutCharAtI = word.substring(0, i) + word.substring(i + 1);
     if (spell(wordWithoutCharAtI).length) {
       suggestions.push(wordWithoutCharAtI);
     }
     for (const symbol of symbols) {
-      if (symbol.includes(word[i])) {
+      if (symbol.toUpperCase().includes(word[i])) {
         const wordWithCharAtIReplacedBySymbolContainingCharAtI = word.substring(0, i) + symbol + word.substring(i + 1);
         if (spell(wordWithCharAtIReplacedBySymbolContainingCharAtI).length) {
           suggestions.push(wordWithCharAtIReplacedBySymbolContainingCharAtI);
@@ -67,7 +69,7 @@ function suggestFuzzy(word) {
       }
     }
   }
-  return suggestions;
+  return suggestions.map((w) => w.toLowerCase());
 }
 
 
