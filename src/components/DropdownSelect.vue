@@ -6,11 +6,13 @@
         :value="value"
         @input="$emit('input', $event.target.value)"
         @keydown="handleKeyDown"
+        @blur="blurHideWithDelay"
+        @focus="blurHideData=false"
         :placeholder="placeHolder"
         spellcheck="false"
       />
     </label>
-    <div v-if="showOptions">
+    <div v-if="showOptions && !blurHideData">
       <DropdownSelectOption
         v-if="startIndex > 0"
         option="▲"
@@ -54,7 +56,8 @@ export default {
   data() {
     return {
       selectedIndex: 0,
-      startIndex: 0
+      startIndex: 0,
+      blurHideData: false
     };
   },
   computed: {
@@ -83,7 +86,14 @@ export default {
         e.preventDefault();
         this.nextOption();
       }
-      if (e.key === "Enter" && this.selectedIndex >= 0) this.onSelect(this.options[this.selectedIndex]);
+      if (e.key === "Enter" && this.selectedIndex >= 0) {
+        this.onSelect(this.optionsShown[this.selectedIndex - this.startIndex]);
+      }
+    },
+    blurHideWithDelay() {
+      setTimeout(100, function() {
+        this.blurHideData = true;
+      });
     }
   },
   watch: {
