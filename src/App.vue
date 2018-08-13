@@ -55,8 +55,8 @@ export default {
   // this will not be the Vue instance as you’d expect and this.myMethod will be undefined."
   data() {
     return {
-      input: this.$route.path.split("/spell/")[1] || "",
-      symbolsIndex: 0
+      input: this.$route.params["word"] || "",
+      symbolsIndex: this.$route.query["i"] - 1 || 0
     };
   },
   // For fun, start skimming ->
@@ -83,18 +83,27 @@ export default {
     },
     previousSpelling() {
       this.symbolsIndex--;
-    }
+    },
   },
   watch: {
     input() {
+      // This change invokes symbolsIndex's watcher which updates the url.
       this.symbolsIndex = 0;
-      this.$router.push({ path: `/spell/${this.input}` });
+    },
+    symbolsIndex() {
+      this.$router.push({
+        params: { word: this.input },
+        query: { i: this.symbolsIndex + 1 }
+      });
     }
   },
   // Doesn't (including these 2 comments) this look like the Nepal flag?
   // P.S. For those who haven't seen it: http://flagpedia.net/data/flags/big/np.png
   // <- Stop skimming
-  components: { TheLogo, ElementCellsRow }
+  components: {
+    TheLogo,
+    ElementCellsRow
+  }
 };
 </script>
 
