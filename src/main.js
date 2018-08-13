@@ -7,7 +7,7 @@ Vue.use(VueRouter);
 
 const router = new VueRouter({
   routes: [
-    { path: "/spell/:word", component: App }
+    { path: "/spell/:word", name: "home", component: App }
   ]
 });
 

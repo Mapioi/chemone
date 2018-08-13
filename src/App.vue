@@ -43,7 +43,7 @@
 
 <script>
 
-import spell from "./components/speller";
+import { spell, suggestFuzzy } from "./components/speller";
 import ElementCellsRow from "./components/ElementCellsRow";
 import TheLogo from "./components/TheLogo";
 
@@ -75,6 +75,9 @@ export default {
     },
     hasPreviousSpelling() {
       return this.symbolsIndex > 0;
+    },
+    suggestions() {
+      return suggestFuzzy(this.input);
     }
   },
   methods: {
@@ -84,17 +87,21 @@ export default {
     previousSpelling() {
       this.symbolsIndex--;
     },
-  },
-  watch: {
-    input() {
-      // This change invokes symbolsIndex's watcher which updates the url.
-      this.symbolsIndex = 0;
-    },
-    symbolsIndex() {
+    updateUrl() {
       this.$router.push({
+        name: "home",
         params: { word: this.input },
         query: { i: this.symbolsIndex + 1 }
       });
+    }
+  },
+  watch: {
+    input() {
+      this.symbolsIndex = 0;
+      this.updateUrl();
+    },
+    symbolsIndex() {
+      this.updateUrl();
     }
   },
   // Doesn't (including these 2 comments) this look like the Nepal flag?

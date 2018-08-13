@@ -6,9 +6,9 @@ const symbols = data.elements.map((element) => element.symbol);
  * Returns all ways to spell the given word with chemical symbols.
  * @param {String} word - The word to be spelt. Case-insensitive.
  *                        Whitespaces are omitted.
- * @returns {(String[])[]} - The ways to spell the given word with chemical symbols.
- *                           Each way is represented by an array of strings of chemical symbols.
- *                           If the word cannot be spelt, an empty array is returned.
+ * @returns {String[][]} The ways to spell the given word with chemical symbols.
+ *                       Each way is represented by an array of strings of chemical symbols.
+ *                       If the word cannot be spelt, an empty array is returned.
  * @example
  * // returns [["C", "He", "Mo", "Ne"]]
  * spell("chemone")
@@ -19,7 +19,7 @@ const symbols = data.elements.map((element) => element.symbol);
  * // returns []
  * spell("Jingle")
  */
-export default function spell(word) {
+function spell(word) {
   const spellings = [];
   word = word.toUpperCase().replace(/ /g, "");
 
@@ -45,3 +45,30 @@ export default function spell(word) {
   _spellRecursive(word);
   return spellings;
 }
+
+/**
+ *
+ * @param {String} word
+ * @returns {String[]}
+ */
+function suggestFuzzy(word) {
+  const suggestions = [];
+  for (let i = 0; i < word.length; i++) {
+    const wordWithoutCharAtI = word.substring(0, i) + word.substring(i + 1);
+    if (spell(wordWithoutCharAtI).length) {
+      suggestions.push(wordWithoutCharAtI);
+    }
+    for (const symbol of symbols) {
+      if (symbol.includes(word[i])) {
+        const wordWithCharAtIReplacedBySymbolContainingCharAtI = word.substring(0, i) + symbol + word.substring(i + 1);
+        if (spell(wordWithCharAtIReplacedBySymbolContainingCharAtI).length) {
+          suggestions.push(wordWithCharAtIReplacedBySymbolContainingCharAtI);
+        }
+      }
+    }
+  }
+  return suggestions;
+}
+
+
+export { spell, suggestFuzzy };
