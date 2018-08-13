@@ -1,51 +1,45 @@
 <template>
   <div id="app">
     <TheLogo/>
-    <div>
-      <label>
-        <!--TODO make a list of placeholders-->
-        <input
-          autofocus
-          v-model="input"
-          placeholder="Paris"
-          spellcheck="false"
-        />
-      </label>
-    </div>
-    <div>
-      <ElementCellsRow
-        v-if="nSpellings"
-        :symbols="symbols"
-      />
-      <button
-        v-if="nSpellings"
-        @click="previousSpelling"
-        :disabled="!hasPreviousSpelling"
-      >
-        ‹
-      </button>
-      <button
-        v-if="nSpellings"
-        @click="nextSpelling"
-        :disabled="!hasNextSpelling"
-      >
-        ›
-      </button>
-      <span
-        v-if="nSpellings"
-        class="small-text"
-      >
+    <DropdownSelect
+      v-model="input"
+      place-holder="Paris"
+      :show-options="!nSpellings"
+      :options="suggestions"
+      :on-select="takeSuggestion"
+    />
+    <ElementCellsRow
+      v-if="nSpellings"
+      :symbols="symbols"
+    />
+    <button
+      v-if="nSpellings"
+      @click="previousSpelling"
+      :disabled="!hasPreviousSpelling"
+    >
+      ‹
+    </button>
+    <button
+      v-if="nSpellings"
+      @click="nextSpelling"
+      :disabled="!hasNextSpelling"
+    >
+      ›
+    </button>
+    <span
+      v-if="nSpellings"
+      class="small-text"
+    >
         {{ symbolsIndex + 1 }} of {{ nSpellings }} result{{ nSpellings !== 1 ? "s" : "" }}
       </span>
-    </div>
   </div>
 </template>
 
 <script>
-
 import { spell, suggestFuzzy } from "./components/speller";
 import ElementCellsRow from "./components/ElementCellsRow";
 import TheLogo from "./components/TheLogo";
+import DropdownSelect from "./components/DropdownSelect";
 
 export default {
   name: "app",
@@ -59,7 +53,6 @@ export default {
       symbolsIndex: this.$route.query["i"] - 1 || 0
     };
   },
-  // For fun, start skimming ->
   computed: {
     symbolsList() {
       return spell(this.input);
@@ -93,6 +86,9 @@ export default {
         params: { word: this.input },
         query: { i: this.symbolsIndex + 1 }
       });
+    },
+    takeSuggestion(suggestion) {
+      this.input = suggestion;
     }
   },
   watch: {
@@ -104,10 +100,8 @@ export default {
       this.updateUrl();
     }
   },
-  // Doesn't (including these 2 comments) this look like the Nepal flag?
-  // P.S. For those who haven't seen it: http://flagpedia.net/data/flags/big/np.png
-  // <- Stop skimming
   components: {
+    DropdownSelect,
     TheLogo,
     ElementCellsRow
   }
@@ -122,28 +116,6 @@ export default {
   text-align: center;
   color: #2c3e50;
   margin-top: 60px;
-}
-
-input {
-  width: 400px;
-  height: 40px;
-  border-radius: 15px;
-  border: 2px solid #e3e3e3;
-  color: #2c3e50;
-  outline: none;
-  padding: 0 15px 0 32px;
-  font-size: 1.5em;
-  margin: 20px auto;
-  transition: border-color 0.2s ease;
-  vertical-align: middle !important;
-  background-size: 16px;
-  background: #fff url("assets/baseline-spellcheck-24px.svg") 5px no-repeat;
-  text-transform: capitalize;
-}
-
-input:focus {
-  border-color: #42b983;
-  outline-width: 0;
 }
 
 button {
