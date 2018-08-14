@@ -14,11 +14,12 @@
     </label>
     <div v-if="showOptions && !blurHideData">
       <DropdownSelectOption
-        v-if="startIndex > 0"
+        v-if="canShiftUp"
         option="▲"
         :selected="false"
-        :on-select="previousOption"
-        :on-hover="previousOption"
+        :on-select="shiftUp"
+        :on-mouse-enter="startShiftingUp"
+        :on-mouse-leave="stopShifting"
       />
       <DropdownSelectOption
         v-for="(option, i) of optionsShown"
@@ -26,14 +27,15 @@
         :option="option"
         :selected="startIndex + i === selectedIndex"
         :on-select="() => onSelect(option)"
-        :on-hover="() => selectedIndex = startIndex + i"
+        :on-mouse-enter="() => selectedIndex = startIndex + i"
       />
       <DropdownSelectOption
-        v-if="endIndex <= options.length"
+        v-if="canShiftDown"
         option="▼"
         :selected="false"
-        :on-select="nextOption"
-        :on-hover="nextOption"
+        :on-select="shiftDown"
+        :on-mouse-enter="startShiftingDown"
+        :on-mouse-leave="stopShifting"
       />
     </div>
   </div>
@@ -50,19 +52,29 @@ export default {
     placeHolder: String,
     options: { type: Array, required: true },
     showOptions: { type: Boolean, required: true },
-    height: { type: Number, default: 15 },
+    height: { type: Number, default: 9 },
     onSelect: { type: Function, required: true }
   },
   data() {
     return {
       selectedIndex: 0,
       startIndex: 0,
-      blurHideData: false
+      blurHideData: false,
+      intervalId: null
     };
   },
   computed: {
+    canShiftUp() {
+      return this.startIndex > 0;
+    },
+    canShiftDown() {
+      return this.endIndex <= this.options.length + 1;
+    },
     endIndex() {
-      return this.startIndex + this.height;
+      let endIndex = this.startIndex + this.height;
+      if (this.canShiftUp) endIndex--;
+      if (endIndex <= this.options.length + 1) endIndex--;
+      return endIndex;
     },
     optionsShown() {
       return [this.value, ...this.options].slice(this.startIndex, this.endIndex);
@@ -70,12 +82,37 @@ export default {
   },
   methods: {
     nextOption() {
-      if (this.selectedIndex < this.options.length) this.selectedIndex++;
-      if (this.selectedIndex >= this.endIndex) this.startIndex++;
+      if (this.selectedIndex >= this.options.length) return;
+      if (this.selectedIndex >= this.endIndex - 2) {
+        this.shiftDown();
+      } else {
+        this.selectedIndex++;
+      }
     },
     previousOption() {
-      if (this.selectedIndex > 0) this.selectedIndex--;
-      if (this.selectedIndex < this.startIndex) this.startIndex--;
+      if (this.selectedIndex <= 0) return;
+      if (this.selectedIndex <= this.startIndex) {
+        this.shiftUp();
+      } else {
+        this.selectedIndex--;
+      }
+    },
+    shiftUp() {
+      this.selectedIndex--;
+      this.startIndex--;
+    },
+    shiftDown() {
+      this.selectedIndex++;
+      this.startIndex++;
+    },
+    startShiftingUp() {
+      this.intervalId = setInterval(this.shiftUp, 200);
+    },
+    startShiftingDown() {
+      this.intervalId = setInterval(this.shiftDown, 200);
+    },
+    stopShifting() {
+      clearInterval(this.intervalId);
     },
     handleKeyDown(e) {
       if (e.key === "ArrowUp") {

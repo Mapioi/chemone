@@ -2,7 +2,8 @@
   <div
     :class="{option, selected}"
     @click="onSelect"
-    @mouseover="onHover"
+    @mouseenter="onMouseEnter"
+    @mouseleave="onMouseLeave"
   >
     {{ option }}
   </div>
@@ -15,7 +16,11 @@ export default {
     selected: { type: Boolean, required: true },
     option: { type: String, required: true },
     onSelect: { type: Function, required: true },
-    onHover: { type: Function, required: true },
+    onMouseEnter: { type: Function, required: true },
+    onMouseLeave: { type: Function, default: () => null }
+  },
+  beforeDestroy() {
+    this.onMouseLeave();
   }
 };
 </script>
